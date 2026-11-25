@@ -123,4 +123,24 @@ class ScholarshipCalculatorTest {
     void scholarship_lowGpa_is0() {
         assertEquals(0, calc.scholarship(2.0, 20, false));
     }
+
+    // ---------- Хэсэг C: давталтын зааг (0 / 1 / 2+ удаа) ----------
+
+    @Test
+    void gpa_loopZeroTimes_emptyAndNullThrow() {
+        // 0 удаа: давталтад орохоос өмнө хамгаалалт ажиллах ёстой
+        assertThrows(IllegalArgumentException.class, () -> calc.gpa(new double[] {}));
+        assertThrows(IllegalArgumentException.class, () -> calc.gpa(null));
+    }
+
+    @Test
+    void gpa_loopOnce_singleScore95_is4() {
+        assertEquals(4.0, calc.gpa(new double[] {95}), 1e-9);
+    }
+
+    @Test
+    void gpa_loopManyTimes_fourScores_is2point5() {
+        // A=4, B=3, C=2, D=1 -> 10/4 = 2.5
+        assertEquals(2.5, calc.gpa(new double[] {95, 85, 75, 65}), 1e-9);
+    }
 }
