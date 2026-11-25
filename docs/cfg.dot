@@ -1,0 +1,35 @@
+digraph scholarship {
+  rankdir=TB; node [fontname="Helvetica", fontsize=11]; edge [fontname="Helvetica", fontsize=9];
+  start [shape=oval, label="scholarship(gpa, credits, hasViolation)"];
+  n1 [shape=diamond, label="1: gpa < 0"];
+  n2 [shape=diamond, label="2: gpa > 4"];
+  n3 [shape=diamond, label="3: credits < 0"];
+  thr [shape=box, style=filled, fillcolor="#f8d7da", label="T: throw IllegalArgumentException"];
+  n4 [shape=diamond, label="4: hasViolation"];
+  n5 [shape=diamond, label="5: gpa >= 3.8"];
+  n6 [shape=diamond, label="6: credits >= 15"];
+  n7 [shape=diamond, label="7: gpa >= 3.4"];
+  n8 [shape=diamond, label="8: credits >= 12"];
+  n9 [shape=diamond, label="9: gpa >= 3.0"];
+  r0a [shape=box, label="R1: return 0"]; r100 [shape=box, label="R2: return 100"];
+  r70 [shape=box, label="R3: return 70"]; r50 [shape=box, label="R4: return 50"]; r0b [shape=box, label="R5: return 0"];
+  start -> n1;
+  n1 -> thr [label="T\nscholarship_negativeGpa_throws"];
+  n1 -> n2  [label="F\nscholarship_gpaOver4_throws\n+ бусад бүх scholarship_*"];
+  n2 -> thr [label="T\nscholarship_gpaOver4_throws"];
+  n2 -> n3  [label="F\nscholarship_negativeCredits_throws\n+ бусад"];
+  n3 -> thr [label="T\nscholarship_negativeCredits_throws"];
+  n3 -> n4  [label="F\nscholarship_violation_is0 + бусад"];
+  n4 -> r0a [label="T\nscholarship_violation_is0"];
+  n4 -> n5  [label="F\nscholarship_highGpaManyCredits_is100\n+ бусад"];
+  n5 -> n6  [label="T\nscholarship_highGpaManyCredits_is100\nscholarship_highGpaFewCredits_is70"];
+  n6 -> r100 [label="T\nscholarship_highGpaManyCredits_is100"];
+  n6 -> n7  [label="F\nscholarship_highGpaFewCredits_is70"];
+  n5 -> n7  [label="F\nscholarship_goodGpaEnoughCredits_is70\nscholarship_goodGpaTooFewCredits_is50\nscholarship_gpa3point2_is50\nscholarship_lowGpa_is0"];
+  n7 -> n8  [label="T\nscholarship_goodGpaEnoughCredits_is70\nscholarship_highGpaFewCredits_is70\nscholarship_goodGpaTooFewCredits_is50"];
+  n8 -> r70 [label="T\nscholarship_goodGpaEnoughCredits_is70\nscholarship_highGpaFewCredits_is70"];
+  n8 -> n9  [label="F\nscholarship_goodGpaTooFewCredits_is50"];
+  n7 -> n9  [label="F\nscholarship_gpa3point2_is50\nscholarship_lowGpa_is0"];
+  n9 -> r50 [label="T\nscholarship_goodGpaTooFewCredits_is50\nscholarship_gpa3point2_is50"];
+  n9 -> r0b [label="F\nscholarship_lowGpa_is0"];
+}
