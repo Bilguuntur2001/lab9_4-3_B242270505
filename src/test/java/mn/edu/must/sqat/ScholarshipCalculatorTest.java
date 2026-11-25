@@ -3,6 +3,8 @@ package mn.edu.must.sqat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * ScholarshipCalculator-ийн тестүүд.
@@ -142,5 +144,13 @@ class ScholarshipCalculatorTest {
     void gpa_loopManyTimes_fourScores_is2point5() {
         // A=4, B=3, C=2, D=1 -> 10/4 = 2.5
         assertEquals(2.5, calc.gpa(new double[] {95, 85, 75, 65}), 1e-9);
+    }
+
+    // ---------- Хэсэг D: зааг утгууд (спецификаци: 60-69.99 -> D, 0-59.99 -> F ...) ----------
+
+    @ParameterizedTest(name = "letterGrade({0}) = {1}")
+    @CsvSource({"60, D", "59.99, F", "69.99, D", "0, F", "100, A", "89.99, B", "90, A"})
+    void letterGrade_boundaryValues_matchSpec(double score, String expected) {
+        assertEquals(expected, calc.letterGrade(score));
     }
 }
